@@ -1,0 +1,30 @@
+\section{Indledning}
+
+Denne øvelse omhandler syntese af lyd ved hjælp af Karplus Strong algoritmen. 
+
+Karplus Strong algoritmen er opfundet af Alexander Strong og sidenhen viderudviklet i samarbejde med Kevin Karplus\cite{Karplus1983}, hvilket giver navnet Karplus Strong --- de kaldte dog selv algoritmen \emph{Digitar}, da den kan frembringe klangtoner som kan beskrives som en \textbf{\emph{Digi}tal gui\emph{tar}}
+
+Princippet i algoritmen er: 
+
+En kort periode af støj filtreres og forsinkes, dette adderes til  det originale signal.
+
+
+
+
+
+
+\section{Design om implementering}
+
+\fig{Karplus-strong-schematic}{0.4}{
+Signalflow der viser konceptet af Karplus Strong syntese.\cite{KarplusSignalFlowWiki}}
+
+Jaffe \& Smith beskriver algoritmen 
+\begin{equation}
+    y[n] = x[n] + \frac{y[n - N] + y\left[n -(N + 1)\right]}{2} 
+\end{equation}
+hvor $x$ er signalamplituden ved sample $n$ og $y$ er udgangsamplitude ved sample $n$. 
+$N$ er længden af toneperioden givet i samples \cite{Jaffe1983} 
+
+
+
+

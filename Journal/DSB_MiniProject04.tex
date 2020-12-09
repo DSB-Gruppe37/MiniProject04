@@ -1,0 +1,49 @@
+\documentclass[danish,a4paper,journal]{journal}
+\usepackage{EEpreamble}
+\usepackage{lstautodedent}
+
+% Define location of Matlab code
+\def\dirsrc{../matlab/}
+
+\begin{document}
+
+% Set listing style
+\lstset{style=matlab}
+
+% Title page
+\title{
+	E3DSB --- Miniprojekt 3\\
+	Analyse af EKG-signal\\
+	\small Afleveret 2020--12--11
+}
+
+\author{
+	\begin{tabular}{lr}
+		\multicolumn{2}{c}{\textbf{Gruppe 37}} \\
+		Adam Ryager Høj         & 201803767    \\
+		Rasmus Kahr             & 201803491    \\
+		\multicolumn{2}{c}{\small Aarhus University - School of Engineering}
+	\end{tabular}
+}
+\frontpagestyle
+\maketitle
+\tableofcontents
+\mainpagestyle
+% Main journal files
+% \input{tex/Arbejdsfordeling.tex}
+% \input{tex/Delopgaver.tex}
+\input{tex/Indledning.tex}
+% \clearpage
+% \input{tex/Implementering.tex}
+% \input{tex/Resultater.tex}
+% % \input{tex/KeyValues.tex}
+% \clearpage
+% \input{tex/Konklusion.tex}
+
+\bibliographystyle{IEEEtran}
+\bibliography{Gruppe37}
+
+% Appendix
+\frontpagestyle
+\appendices
+\end{document}
