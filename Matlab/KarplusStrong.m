@@ -1,13 +1,14 @@
-function KarplusSound = KarplusStrong(Tone, SampleRate, N, duration)
+function KarplusSound = KarplusStrong(Tone,duration,Klang,SampleRate, N)
     %myFun - Description
     %
     % Syntax:  karplusStrong(Tone,SampleRate,N,Duration)
     %
     % Long description
     DEFAULT_TONE = 262; % C4
+    DEFAULT_KLANG = 0; % C4
     DEFAULT_SAMPLERATE = 20e3;
     DEFAULT_N = 4096;
-    DEFAULT_DURATION = 4;
+    DEFAULT_DURATION = 0.25;
 
     try
 
@@ -17,6 +18,15 @@ function KarplusSound = KarplusStrong(Tone, SampleRate, N, duration)
 
     catch
         Tone = DEFAULT_TONE;
+    end
+    try
+
+        if isempty(Klang)
+            Klang = DEFAULT_KLANG;
+        end
+
+    catch
+        Klang = DEFAULT_KLANG;
     end
 
     try
@@ -77,23 +87,23 @@ function KarplusSound = KarplusStrong(Tone, SampleRate, N, duration)
     % Create coefficients for the filter
     bCoeff = firls(filterOrder, normFreqVector, AmpVector);
 
-    Klang = 0.0;
+
 
     % Include the first sample - exclude samples during the delay and mean the two samples lastly read
-    aCoeff = [1 zeros(1, DelayBin), -0.5 - Klang, -0.5 + Klang + 0.008];
+    aCoeff = [1 zeros(1, DelayBin), -0.5 - Klang, -0.5 + Klang];
 
     % [1 000000000000000000000000000000 -0.5,-0.5]
-    figure(1); clf
-    freqz(bCoeff, aCoeff, f_vek, SampleRate);
-    title('C Tone - Frequency domain');
+    % figure(1); clf
+    % freqz(bCoeff, aCoeff, f_vek, SampleRate);
+    % title('C Tone - Frequency domain');
 
-    [H, W] = freqz(bCoeff, aCoeff, f_vek, SampleRate);
+    % [H, W] = freqz(bCoeff, aCoeff, f_vek, SampleRate);
 
-    figure(2); clf
-    plot(W, 20 * log10(abs(H)));
-    title('C Tone - Frequency domain');
-    xlabel('Frequency (Hz)');
-    ylabel('Magnitude (dB)');
+    % figure(2); clf
+    % % plot(W, 20 * log10(abs(H)));
+    % % title('C Tone - Frequency domain');
+    % % xlabel('Frequency (Hz)');
+    % ylabel('Magnitude (dB)');
     grid on
 
     %%% Filter creation
@@ -105,12 +115,12 @@ function KarplusSound = KarplusStrong(Tone, SampleRate, N, duration)
     note = note - mean(note);
     note = note / max(abs(note)); % Normalization
 
-    time = 1:(length(note));
-    length(time)
-    figure(3);
-    plot(time * t_res, note)
-    xlabel('Time (s)')
-    KarplusSound = audioplayer(note, SampleRate); 
+    % time = 1:(length(note));
+    % length(time)
+    % figure(3);
+    % plot(time * t_res, note)
+    % xlabel('Time (s)')
+    KarplusSound = note; 
 end
     %% Tanke
 
