@@ -1,2 +1,2 @@
-KarplusSound = KarplusStrong(440);
+KarplusSound = KarplusStrong();
 play(KarplusSound);

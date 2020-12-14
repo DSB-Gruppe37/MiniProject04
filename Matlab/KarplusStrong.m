@@ -81,7 +81,6 @@ function KarplusSound = KarplusStrong(Tone, SampleRate, N, duration)
 
     % Include the first sample - exclude samples during the delay and mean the two samples lastly read
     aCoeff = [1 zeros(1, DelayBin), -0.5 - Klang, -0.5 + Klang + 0.008];
-    aCoeff = [1 zeros(1, DelayBin), -0.5, -0.45];
 
     % [1 000000000000000000000000000000 -0.5,-0.5]
     figure(1); clf
@@ -108,7 +107,7 @@ function KarplusSound = KarplusStrong(Tone, SampleRate, N, duration)
 
     time = 1:(length(note));
     length(time)
-    figure(2);
+    figure(3);
     plot(time * t_res, note)
     xlabel('Time (s)')
     KarplusSound = audioplayer(note, SampleRate); 
