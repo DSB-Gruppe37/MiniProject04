@@ -1,0 +1,11 @@
+\section{Design og implementering}
+
+\fig{Karplus-strong-schematic}{0.4}{
+  Signalflow der viser konceptet af Karplus Strong syntese.\cite{KarplusSignalFlowWiki}}
+
+Jaffe \& Smith beskriver algoritmen
+\begin{equation}
+  y[n] = x[n] + \frac{y[n - N] + y\left[n -(N + 1)\right]}{2}
+\end{equation}
+hvor \(x\) er signalamplituden ved sample \(n\) og \(y\) er udgangsamplitude ved sample \(n\).
+\(N\) er længden af toneperioden givet i samples \cite{Jaffe1983}

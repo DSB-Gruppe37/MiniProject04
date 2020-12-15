@@ -1,30 +1,10 @@
 \section{Indledning}
 
-Denne øvelse omhandler syntese af lyd ved hjælp af Karplus Strong algoritmen. 
+I denne øvelse vil der blive undersøgt syntese af lyd ved hjælp af Karplus-Strong algoritmen, som kan generere naturligt-lydende toner som var de spillet på en guitar.
+Undersøgelsen vil omfatte en implementation af algoritmen samt en sammenligning af algoritmens genererede toner med toner spillet på en akustisk guitar.
 
-Karplus Strong algoritmen er opfundet af Alexander Strong og sidenhen viderudviklet i samarbejde med Kevin Karplus\cite{Karplus1983}, hvilket giver navnet Karplus Strong --- de kaldte dog selv algoritmen \emph{Digitar}, da den kan frembringe klangtoner som kan beskrives som en \textbf{\emph{Digi}tal gui\emph{tar}}
+Karplus Strong algoritmen er opfundet af Alexander Strong og sidenhen viderudviklet i samarbejde med Kevin Karplus\cite{Karplus1983}, hvilket giver navnet Karplus-Strong---de kaldte dog selv algoritmen \emph{Digitar}, da den kan frembringe klangtoner som kan beskrives som en \textbf{\emph{Digi}tal gui\emph{tar}}.
 
-Princippet i algoritmen er: 
+Algoritmen kan kort beskrives som: en filtrering af et indledende støjsignal, således at kun den specificerede harmoniske tone og multiplum af denne lades passere igennem filtret.
 
 En kort periode af støj filtreres og forsinkes, dette adderes til  det originale signal.
-
-
-
-
-
-
-\section{Design om implementering}
-
-\fig{Karplus-strong-schematic}{0.4}{
-Signalflow der viser konceptet af Karplus Strong syntese.\cite{KarplusSignalFlowWiki}}
-
-Jaffe \& Smith beskriver algoritmen 
-\begin{equation}
-    y[n] = x[n] + \frac{y[n - N] + y\left[n -(N + 1)\right]}{2} 
-\end{equation}
-hvor $x$ er signalamplituden ved sample $n$ og $y$ er udgangsamplitude ved sample $n$. 
-$N$ er længden af toneperioden givet i samples \cite{Jaffe1983} 
-
-
-
-
