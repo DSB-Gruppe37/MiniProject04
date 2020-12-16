@@ -1,5 +1,14 @@
 \section{Design og implementering}
 
+Syntetiseringen bygger på et valg af grundfrekvens \(f_0\) for den tone der skal afspilles. Ud fra den almindelig tonerække for en stemt guitar\cite{GuitarTunings}, kan der nemt vælges et sæt frekvenser mellem \SI{82.41}{\hertz}--\SI{329.63}{\hertz} som kan afprøves for at vurdere algoritmens evne til at syntetisere korrekte toner.
+Sammenhængen mellem grundfrekvens og samplingfrekvens ses i \ref{eq:fund and sample relation} og giver tonens periodetid \(N\) i samples og kan desuden beskrives som en forsinkelse i det filter der realiserer algoritmen.
+
+\begin{equation}\label{eq:fund and sample relation}
+  N = \frac{f_s}{f_0}
+\end{equation}
+
+På \figref{Karplus-strong-schematic} ses blokdiagram der beskriver filteret hvor \(L = N\). I den originale algoritme bruges et 2-tap midlingsfilter da algoritmen blev udviklet til at kræve minimal beregningskraft\cite{Karplus1983}, dog kan andre filtre også bruges.
+
 \fig{Karplus-strong-schematic}{0.4}{
   Signalflow der viser konceptet af Karplus Strong syntese.\cite{KarplusSignalFlowWiki}}
 

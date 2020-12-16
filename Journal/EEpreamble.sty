@@ -130,10 +130,6 @@
 \usepackage{booktabs}
 \usepackage{blindtext}
 
-% Ordliste og forkortelser
-\usepackage[acronym,toc]{glossaries}
-\makeglossaries
-
 \usepackage[footnote,smaller]{acronym}
 
 %%% Subfigures %%%%
@@ -425,14 +421,14 @@
 }
 
 \lstset{
-	extendedchars=true,
-	literate=%
-		{æ}{{\ae}}1%
-		{Æ}{{\AE}}1%
-		{ø}{{\o}}1%
-		{Ø}{{\O}}1%
-		{å}{{\aa}}1%
-		{Å}{{\AA}}1
+extendedchars=true,
+literate=%
+	{æ}{{\ae}}1%
+{Æ}{{\AE}}1%
+{ø}{{\o}}1%
+{Ø}{{\O}}1%
+{å}{{\aa}}1%
+{Å}{{\AA}}1
 }
 
 \usepackage{inconsolata}
@@ -442,7 +438,7 @@
 	rangeprefix=///\ ,
 	includerangemarker=false
 }
- 
+
 
 % 	\renewcommand*\familydefault{\ttdefault} %% Only if the base font of the document is to be typewriter style
 % 	\usepackage[italic]{mathastext}

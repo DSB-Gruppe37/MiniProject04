@@ -1,4 +1,4 @@
-function KarplusSound = KarplusStrong(Tone,duration,Klang,SampleRate, N)
+function KarplusSound = KarplusStrong(Tone, duration, Klang, SampleRate, N)
     %myFun - Description
     %
     % Syntax:  karplusStrong(Tone,SampleRate,N,Duration)
@@ -10,57 +10,25 @@ function KarplusSound = KarplusStrong(Tone,duration,Klang,SampleRate, N)
     DEFAULT_N = 4096;
     DEFAULT_DURATION = 0.25;
 
-    try
-
-        if isempty(Tone)
-            Tone = DEFAULT_TONE;
-        end
-
-    catch
+    if nargin < 1
         Tone = DEFAULT_TONE;
     end
-    try
 
-        if isempty(Klang)
-            Klang = DEFAULT_KLANG;
-        end
-
-    catch
-        Klang = DEFAULT_KLANG;
-    end
-
-    try
-
-        if isempty(SampleRate)
-            SampleRate = DEFAULT_SAMPLERATE;
-        end
-
-    catch
-        SampleRate = DEFAULT_SAMPLERATE;
-    end
-
-    try
-
-        if isempty(N)
-            N = DEFAULT_N;
-        end
-
-    catch
-        N = DEFAULT_N;
-    end
-
-    try
-
-        if isempty(duration)
-            duration = DEFAULT_DURATION;
-        end
-
-    catch
+    if nargin < 2
         duration = DEFAULT_DURATION;
     end
 
+    if nargin < 3
+        Klang = DEFAULT_KLANG;
+    end
 
+    if nargin < 4
+        SampleRate = DEFAULT_SAMPLERATE;
+    end
 
+    if nargin < 5
+        N = DEFAULT_N;
+    end
 
     F_nyquist = SampleRate / 2;
     x = zeros(SampleRate * duration, 1);
@@ -78,19 +46,16 @@ function KarplusSound = KarplusStrong(Tone,duration,Klang,SampleRate, N)
     % Normalizing the frequency for tone - newr ange [0:1]
     freqNormalized = 1 / DelayBin;
     filterOrder = 20
-    
+
     % process the first
-    normFreqVector = [0, freqNormalized, 2*freqNormalized, 1];
-    AmpVector = [0, 0, 1, 1];
- 
+    normFreqVector = [0, freqNormalized, 2 * freqNormalized, 1];
+    AmpVector = [0 0 1 1];
 
     % Create coefficients for the filter
     bCoeff = firls(filterOrder, normFreqVector, AmpVector);
 
-
-
     % Include the first sample - exclude samples during the delay and mean the two samples lastly read
-    aCoeff = [1 zeros(1, DelayBin), -0.5 - Klang, -0.5 + Klang];
+    aCoeff = [1, zeros(1, DelayBin), -0.5 - Klang, -0.5 + Klang];
 
     % [1 000000000000000000000000000000 -0.5,-0.5]
     % figure(1); clf
@@ -110,7 +75,6 @@ function KarplusSound = KarplusStrong(Tone,duration,Klang,SampleRate, N)
 
     noiseVektor = rand(max(length(aCoeff), length(bCoeff)) - 1, 1);
 
-
     note = (filter(bCoeff, aCoeff, x, noiseVektor));
     note = note - mean(note);
     note = note / max(abs(note)); % Normalization
@@ -120,18 +84,5 @@ function KarplusSound = KarplusStrong(Tone,duration,Klang,SampleRate, N)
     % figure(3);
     % plot(time * t_res, note)
     % xlabel('Time (s)')
-    KarplusSound = note; 
+    KarplusSound = note;
 end
-    %% Tanke
-
-    %% Kort delay (~ 5-10 ms)
-    %% Filter med lowpass
-    %%
-
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %                       ||| SIGNAL FLOW |||                              %
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % | Noise burst | --(+)-------------------------------/---> |Karplus strong output|
-    %                   ^                               v
-    %                  |--<--|Filter| <-- |Delay|<-----|
-    % %%%%%%%%%%%%%%%%%%%%%%%%%%N%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
