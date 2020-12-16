@@ -1,5 +1,9 @@
 clear; clc; workspace;
 
+% Define figure output folders
+figdir = '../Journal/figs/';
+previewdir = '../Journal/figs/Preview/';
+
 %% Comparing open A notes from nylon guitar and synthesized
 % Load A note from nylon guitar
 [A, fs] = audioread('7398__kyster__notes-on-nylon-strings/117708__kyster__a.wav');
@@ -18,8 +22,8 @@ semilogx(freq(1:0.5 * end), A_fft_norm(1:0.5 * end));
 title('A')
 grid on;
 axis tight
-xlabel('Frekvens [Hz]');
-ylabel('Spænding [V]');
+xlabel('Frequency [Hz]');
+ylabel('Magnitude');
 hold on;
 
 % Synthesize A note
@@ -30,9 +34,12 @@ A_synth_fft_norm = 2 * A_synth_fft / N;
 
 % Plot synthesized A note
 semilogx(freq(1:0.5 * end), A_synth_fft_norm(1:0.5 * end));
-legend('A', 'A synthesized', 'Location', 'best');
+legend('A nylon string', 'A synthesized', 'Location', 'best');
 xlim([10 10000])
 hold off;
+
+saveas(gcf, [figdir 'Compare_A_note'], 'epsc')
+saveas(gcf, [previewdir 'Compare_A_note'], 'png')
 
 % Play A note and synthesized A note
 player = audioplayer([A(:,1); A_synth], fs);
