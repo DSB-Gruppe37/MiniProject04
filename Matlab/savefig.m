@@ -1,15 +1,20 @@
-function savefig(filename, figdir, previewdir)
+function savefig(filename, figdir, previewdir, target)
   DEFAULT_FIGDIR = '../Journal/figs/';
   DEFAULT_PREVIEWDIR = '../Journal/figs/Preview/';
+  DEFAULT_TARGET = gcf;
 
-  if nargin < 2
+  if nargin < 2 || isempty(figdir)
     figdir = DEFAULT_FIGDIR;
   end
 
-  if nargin < 3
+  if nargin < 3 || isempty(previewdir)
     previewdir = DEFAULT_PREVIEWDIR;
   end
 
-  saveas(gcf, [figdir filename], 'epsc')
-  saveas(gcf, [previewdir filename], 'png')
+  if nargin < 4
+    target = DEFAULT_TARGET;
+  end
+
+  saveas(target, [figdir filename], 'epsc')
+  saveas(target, [previewdir filename], 'png')
 end
