@@ -1,6 +1,7 @@
 \section{Design og implementering}
 
-Syntetiseringen bygger på et valg af grundfrekvens \(f_0\) for den tone der skal afspilles. Ud fra den almindelig tonerække for en stemt guitar\cite{GuitarTunings}, kan der nemt vælges et sæt frekvenser mellem \SI{82.41}{\hertz}--\SI{329.63}{\hertz} som kan afprøves for at vurdere algoritmens evne til at syntetisere korrekte toner.
+Syntetiseringen bygger på et valg af grundfrekvens \(f_0\) for den tone der skal afspilles.
+Ud fra den almindelig tonerække for en stemt guitar\cite{GuitarTunings}, kan der nemt vælges et sæt frekvenser til test, disse er gengivet i \tabref{guitar tunings}.
 Sammenhængen mellem grundfrekvens og samplingfrekvens ses i \ref{eq:fund and sample relation} og giver tonens periodetid \(N\) i samples og kan desuden beskrives som en forsinkelse i det filter der realiserer algoritmen.
 
 \begin{equation}\label{eq:fund and sample relation}
@@ -18,3 +19,23 @@ Jaffe \& Smith beskriver algoritmen
 \end{equation}
 hvor \(x\) er signalamplituden ved sample \(n\) og \(y\) er udgangsamplitude ved sample \(n\).
 \(N\) er længden af toneperioden givet i samples \cite{Jaffe1983}
+
+\begin{table}[]
+  \centering
+  \caption{Guitar streng og sammenhørende frekvens ved almindelig stemning\cite{GuitarTunings}.}
+  \label{tab:guitar tunings}
+  \begin{tabular}{cc}
+    \toprule
+    Streng & Frekvens  \\ \midrule
+    E      & 329.63 Hz \\
+    B      & 246.94 Hz \\
+    G      & 196.00 Hz \\
+    D      & 146.83 Hz \\
+    A      & 110.00 Hz \\
+    E      & 82.41 Hz  \\ \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Implementation af Karplus-Strong algoritmen}
+
+Den fulde implementation ses i bilag \ref{seq:appendix:matlab code}.

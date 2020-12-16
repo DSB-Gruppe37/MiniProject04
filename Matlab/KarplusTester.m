@@ -1,8 +1,4 @@
-clear; clc; workspace;
-
-% Define figure output folders
-figdir = '../Journal/figs/';
-previewdir = '../Journal/figs/Preview/';
+clear; clc; workspace; close all;
 
 %% Comparing open A notes from nylon guitar and synthesized
 % Load A note from nylon guitar
@@ -19,7 +15,6 @@ A_fft_norm = 2 * A_fft / N;
 % Plot nylon guitar A note
 figure(1);
 semilogx(freq(1:0.5 * end), A_fft_norm(1:0.5 * end));
-title('A')
 grid on;
 axis tight
 xlabel('Frequency [Hz]');
@@ -35,11 +30,10 @@ A_synth_fft_norm = 2 * A_synth_fft / N;
 % Plot synthesized A note
 semilogx(freq(1:0.5 * end), A_synth_fft_norm(1:0.5 * end));
 legend('A nylon string', 'A synthesized', 'Location', 'best');
-xlim([10 10000])
+xlim([50 10000])
 hold off;
 
-saveas(gcf, [figdir 'Compare_A_note'], 'epsc')
-saveas(gcf, [previewdir 'Compare_A_note'], 'png')
+savefig('Compare_A_note');
 
 % Play A note and synthesized A note
 player = audioplayer([A(:,1); A_synth], fs);

@@ -1,9 +1,9 @@
-\documentclass[danish,a4paper,journal]{journal}
+\documentclass[danish,a4paper,journal]{article}
 \usepackage{EEpreamble}
 \usepackage{lstautodedent}
 
 % Define location of Matlab code
-\def\dirsrc{../matlab/}
+\def\dirsrc{../Matlab/}
 
 \begin{document}
 
@@ -42,8 +42,10 @@
 % Bibliografi
 \bibliographystyle{IEEEtran}
 \bibliography{Gruppe37}
+\clearpage
 
 % Appendix
 \frontpagestyle
-\appendices
+\input{tex/appendiks.tex}
+
 \end{document}

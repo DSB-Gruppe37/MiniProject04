@@ -65,14 +65,13 @@ function KarplusSound = KarplusStrong(Tone, duration, Klang, SampleRate, N)
     % [H, W] = freqz(bCoeff, aCoeff, f_vek, SampleRate);
 
     % figure(2); clf
-    % % plot(W, 20 * log10(abs(H)));
-    % % title('C Tone - Frequency domain');
-    % % xlabel('Frequency (Hz)');
+    % plot(W, 20 * log10(abs(H)));
+    % title('C Tone - Frequency domain');
+    % xlabel('Frequency (Hz)');
     % ylabel('Magnitude (dB)');
-    grid on
+    % grid on
 
-    %%% Filter creation
-
+    %% Filter creation
     noiseVektor = rand(max(length(aCoeff), length(bCoeff)) - 1, 1);
 
     note = (filter(bCoeff, aCoeff, x, noiseVektor));
