@@ -1,9 +1,19 @@
 function KSPluckSound = KSPluck(Tone, Duration, Fs)
-
-    DEFAULT_TONE = 110; % C note
-    DEFAULT_DURATION = 2;
+%KSDrum - Description
+%
+% Syntax: KSDrumSound = KSDrum(PValue,Duration,Fs)
+% All parameters are optional!
+%
+%
+% Algorithm based on Kevin Karplus & Alexander Strong's
+% design - this method covers the Plucked string algorithm
+%
+    % Setting default values, thereby allowing parameterless call of the function
+    DEFAULT_TONE = 110; % A note 
+    DEFAULT_DURATION = 1;
     DEFAULT_SAMPLERATE = 20e3;
 
+    %% Checking for parameter input
     if nargin < 1
         Tone = DEFAULT_TONE;
     end
@@ -18,23 +28,25 @@ function KSPluckSound = KSPluck(Tone, Duration, Fs)
 
     PValue = round(Fs / (Tone + 0.5));
     % Adding the initial conditions
-    y = [randi([0, 1], [1, PValue]) zeros(1, Fs * Duration)];
-    % y = [ones(1,Fs*Duration)];
-    OutputLength = numel(y);
+    % A set of random integers with range [-1:1] - extra zeros added for duration addtion.
+    y = [randi([-1, 1], [1, PValue]) zeros(1, (Fs * Duration))];
+    OutputLength = numel(y)
 
-    PrevValue = 0; % Avoid the negative index at y(1)
-
+    % Avoid the negative index at y(1)
+    PrevValue = 0; 
+    % Using a 2-tap averagering algorithm
+    % the output is created - note the offset of the index.
+    % This way negative index is avoided.
     for idx = PValue + 1:PValue + OutputLength
-            y(idx) = (y(idx - PValue) + PrevValue) / 2;
+        y(idx) = (y(idx - PValue) + PrevValue) / 2;
         PrevValue = y(idx - PValue);
     end
 
-    note = y;
     %% Subtract the DC offset
-    note = note - mean(note);
+    y = y - mean(y);
     %% Normalize the sound ; Range [0:1]
-    note = note / max(abs(note)); % Normalization
+    y = y / max(abs(y)); % Normalization
 
-    KSPluckSound = note;
+    KSPluckSound = y;
 
 end

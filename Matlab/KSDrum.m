@@ -1,9 +1,22 @@
-function KSDrumSound = KSDrum(PValue,b,Duration,Fs)
+function KSDrumSound = KSDrum(PValue, b, Duration, Fs)
+    %KSDrum - Description
+    %
+    % Syntax: KSDrumSound = KSDrum(PValue,b,Duration,Fs)
+    % All parameters are optional!
+    %
+    %
+    % Algorithm based on Kevin Karplus & Alexander Strong's
+    % design - this method covers the drum algorithm
+    %
+    %
 
-    DEFAULT_PValue = 200; % C note
+    % Setting default values, thereby allowing parameterless call of the function
+    DEFAULT_PValue = 200;
     DEFAULT_B = 0.5;
-    DEFAULT_DURATION = 0.4;
+    DEFAULT_DURATION = 0.2;
     DEFAULT_SAMPLERATE = 20e3;
+
+    %% Checking for parameter input
     if nargin < 1
         PValue = DEFAULT_PValue;
     end
@@ -15,38 +28,39 @@ function KSDrumSound = KSDrum(PValue,b,Duration,Fs)
     if nargin < 3
         Duration = DEFAULT_DURATION;
     end
+
     if nargin < 4
         Fs = DEFAULT_SAMPLERATE;
     end
 
-    
-    % Adding the initial conditions
-    y = [randi([0, 1], [1, PValue]) zeros(1, Fs * Duration)];
-    % y = [ones(1,Fs*Duration)];
+    % Initial condition
+    y = [ones(1, Fs * Duration)];
+
     OutputLength = numel(y);
 
-
+    %% Used for validating the blend factor
     randomValue = rand(1, OutputLength);
 
-    PrevValue = 0; % Avoid the negative index at y(1)
+    % Avoid the negati5ve index at first run
+    PrevValue = 0;
 
-for idx = PValue + 1:PValue + OutputLength
+    for idx = PValue + 1:PValue + OutputLength
+        % Validate the blend factor
+        if randomValue(idx - PValue) >= b
+            y(idx) = (y(idx - PValue) + PrevValue) / 2;
+        else
+            y(idx) = -(y(idx - PValue) + PrevValue) / 2;
+        end
 
-    if randomValue(idx - PValue) <= b
-        y(idx) = (y(idx - PValue) + PrevValue) / 2;
-    else
-        y(idx) = -(y(idx - PValue) + PrevValue) / 2;
+        % Assign the current value as the previous for next run.
+        PrevValue = y(idx - PValue);
     end
 
-    PrevValue = y(idx - PValue);
-end
+    %% Subtract the DC offset
+    y = y - mean(y);
+    %% Normalize the sound ; Range [0:1]
+    y = y / max(abs(y)); % Normalization
 
-note = y;
-%% Subtract the DC offset
-note = note - mean(note);
-%% Normalize the sound ; Range [0:1]
-note = note / max(abs(note)); % Normalization
-
-KSDrumSound = note;
+    KSDrumSound = y;
 
 end
