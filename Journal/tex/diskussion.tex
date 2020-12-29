@@ -1,5 +1,25 @@
 \section{Diskussion}
 
+\subsection{Strengalgoritmen}
+
+Ved sammenligning af de gængse frekvenser for en stemt guitar i \tabref{guitar tunings} og de syntetiserede toners frekvenser som set i \figref{Pluck_FFTComparison} stemmer grundtonen overens med den tone der bliver angivet til syntesen.
+Der ses desuden forskellige mængder af overtoner som også er forventeligt ved anslag på en rigtig guitarstreng.
+
+Grundtonen er ikke nødvendigvis den dominerende, men dette stemmer desuden overens med en rigtig guitarstreng som set på sammenligningerne med en nylonstrengs guitar (f.eks. i \figref{Pluck_Compare_A2_FFT}), hvor grundtonen ligeledes heller ikke dominerer.
+Dog gælder det for alle de syntetiserede toner at energien hurtigt forsvinder i de høje frekvenser.
+Ved gennemlytning lyder de syntetiserede toner desuden meget som almindelige guitarstrenge, hvilket underbygger at algoritmen giver en realistisk lyd.
+
+Ved sammenligning af syntetiserede toner med toner fra en nylonstrengsguitar, som set i bilag \ref{seq:appendix:results:pluck guitar compare} stemmer alle de fremtrædende frekvenser overens for begge typer toner.
+Der er dog to ting der springer i øjnene ved sammenligning:
+
+\begin{itemize}
+  \item Der er væsentlig mere energi i de syntetiserede toner
+  \item Der er væstenlig flere fremtrædende overtoner i de syntetiserede toner
+\end{itemize}
+
+Forskellen i energi kan skyldes måden hvorpå lyder fra guitaren er blevet optaget. Desuden burde amplituden af de to signaler kunne normaliseres, så de matcher bedre.
+Hvad angår overtoner, så fremgår der i de syntetiserede væsentlig flere overtoner i de høje frekvenser.
+Ved sammenligning af lyden er de syntetiserede toner også væsentlig mere metalliske.
 
 \subsection{Trommealgoritmen}
 
