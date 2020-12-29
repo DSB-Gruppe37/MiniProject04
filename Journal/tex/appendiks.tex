@@ -7,4 +7,24 @@
 \includecode{KSDrum.m}{Funktionsfil med implementation af Karplus-Strong trommealgoritmen.}{}
 
 \subsection{Test af implementation}
-\includecode{KarplusTester.m}{Test af den implementerede Karplus-Strong algoritme}{}
+% \includecode{KSPluckPlots.m}{Test af den implementerede Karplus-Strong streng algoritme}{}
+% \includecode{KSDrumPlots.m}{Test af den implementerede Karplus-Strong tromme algoritme}{}
+
+\clearpage
+\section{Resultater}\label{seq:appendix:results}
+
+\subsection{Frekvensspektre for syntetiserede guitar strenge}\label{seq:appendix:results:pluck}
+\fig{Pluck_FFTComparison}{0.8}{FFT resultat af syntetiserede guitarstrenge.}
+
+\clearpage
+\subsection{Tidsmæssig sammenlinging af P-værdi for syntetiserede trommer}\label{seq:appendix:results:drum time}
+\fig{DrumPValueComparison}{0.8}{Tidsmæssig visning af syntetiserede trommelyde ved forskellige \textit{P} og \textit{b} værdier.}
+
+\clearpage
+\subsection{Frekvensspektre for P- og b-værdier}\label{seq:appendix:results:drum freq}
+\fig{DrumFFT_p_32}{0.8}{Frekvensspektre for en række \textit{blend faktorer} ved \(P=32\).}
+\fig{DrumFFT_p_64}{0.8}{Frekvensspektre for en række \textit{blend faktorer} ved \(P=64\).}
+\fig{DrumFFT_p_128}{0.8}{Frekvensspektre for en række \textit{blend faktorer} ved \(P=128\).}
+\fig{DrumFFT_p_256}{0.8}{Frekvensspektre for en række \textit{blend faktorer} ved \(P=256\).}
+\fig{DrumFFT_p_512}{0.8}{Frekvensspektre for en række \textit{blend faktorer} ved \(P=512\).}
+\fig{DrumFFT_p_1024}{0.8}{Frekvensspektre for en række \textit{blend faktorer} ved \(P=1024\).}
