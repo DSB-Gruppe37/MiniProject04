@@ -1,16 +1,29 @@
 \section{Resultater}
 
-Alle resultater fremgår af bilag \ref{seq:appendix:results}, dog beskrives og fremhæves nogle udvalgte resultater i den følgende sektion.
+Test af de implementerede algoritmer sker primært vha. frekvensanalyse hvor der bruges FFT på de syntetiserede toner. Koden til test og plot af resultaterne fremgår af bilag \ref{seq:appendix:matlab code}. Alle resultater fremgår af bilag \ref{seq:appendix:results}, dog beskrives og fremhæves nogle udvalgte resultater i den følgende sektion.
 
 \subsection{Streng-algoritmen}
 
 Ved syntetisering af de seks almindeligt stemte guitarstrenge fremkommer frekvensspektrene som set på bilag \ref{seq:appendix:results:pluck}.
-Desuden blev en syntetiseret \textit{A} tone med frekvensen \SI{110}{\hertz} sammenligninget med den tilsvarende streng spillet på en nylon guitar.
-De to toners frekvensspektre ses sammenlignet på \figref{Pluck_Compare_A_FFT}.
+Desuden blev en syntetiseret \textit{A}, \textit{D} og \textit{G} tone med sammenligninget med den tilsvarende streng spillet på en nylonstrengs guitar.
+De to toners frekvensspektre for tonen \textit{A} ses sammenlignet på \figref{pluck compare A2 fft}, de resterende sammenligninger findes i bilag \ref{seq:appendix:results:pluck guitar compare}.
 
-\fig{Pluck_Compare_A_FFT}{0.8}{Frekvensspektrum for \textit{A} spillet på nylon guitar og syntetiseret med Karplus-Strong algoritmen.}
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{\dirfigs Pluck_Compare_A2_FFT}
+  \caption{Frekvensspektrum for \textit{A} spillet på nylon guitar og syntetiseret med Karplus-Strong algoritmen.}
+  \label{fig:pluck compare A2 fft}
+\end{figure}
 
 \subsection{Tromme-algoritmen}
 
-Ved syntetisering af trommelyde med forskellige \textit{P}- og \textit{b}-værdier fremkommer lyde med forskellige aftagningshastighed og
+Ved syntetisering af trommelyde med forskellige \textit{P}- og \textit{b}-værdier fremkommer lyde med forskellige aftagningshastighed og frekvensspektre.
+Her vises på \figref{drum fft p=128} frekvensspektrene for \(P=128\) og forskellige \textit{b}-værdier, som viser hvordan blend faktoren har en stor indflydelse på frekvensindholdet i den syntetiserede lyd.
+Yderligere frekvensspektre samt tidsmæssig sammenligning af forskellige \textit{P}- og \textit{b}-værdier findes i bilag \ref{seq:appendix:results:drum time} og \ref{seq:appendix:results:drum freq}.
 
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.8\linewidth]{\dirfigs DrumFFT_p_128}
+  \caption{Frekvensspektre for en række \textit{blend faktorer} ved \(P=128\).}
+  \label{fig:drum fft p=128}
+\end{figure}

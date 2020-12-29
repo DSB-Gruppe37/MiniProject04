@@ -49,65 +49,86 @@ title(PluckTile, {'FFT af syntesiserede guitartoner.', 'Toner: eADGBE'})
 savefig('Pluck_FFTComparison')
 
 %%% FFT COMPARE
-clear all;
-[A, fs_guitar] = audioread('7398__kyster__notes-on-nylon-strings/117708__kyster__a.wav');
-N_guitar = length(A);
+clear; clc;
+%% Comparing open guitar string notes from nylon guitar and synthesized
+Notes = {};
 
-PluckSound = KSPluck(110.00, 12,fs_guitar); % A with 12 sec duration
+% Load A2 note from nylon guitar
+[samples, fs] = audioread('7398__kyster__notes-on-nylon-strings/117708__kyster__a.wav');
+N = length(samples);
+Notes{1,1} = struct(...
+  'name', 'A2', 'harmonic', 110, ...
+  'samples', ((samples(:, 1) + samples(:, 2)) / 2)', ... % Stereo to mono
+  'fs', fs, 'N', N);
 
-N = length(PluckSound);
-bins = [0:(N - 1)]; % Antal fft_bins
-freq = bins * (fs_guitar / N); % Frekvensakse
-pluck_fft = abs(fft(PluckSound));
-pluck_fft_norm = 2 * pluck_fft / N;
+% Load D3 note from nylon guitar
+[samples, fs] = audioread('7398__kyster__notes-on-nylon-strings/117713__kyster__d.wav');
+N = length(samples);
+Notes{1,2} = struct(...
+  'name', 'D3', 'harmonic', 147, ...
+  'samples', ((samples(:, 1) + samples(:, 2)) / 2)', ... % Stereo to mono
+  'fs', fs, 'N', N);
 
-figure(2500)
-set(gcf, 'PaperUnits', 'centimeters', 'PaperSize', [20 12], 'PaperPosition', [0 0 20 12])
-semilogx(freq(1:0.5 * end), pluck_fft_norm(1:0.5 * end), 'DisplayName', 'A fra algoritme', 'SeriesIndex', 2);
+% Load G3 note from nylon guitar
+[samples, fs] = audioread('7398__kyster__notes-on-nylon-strings/117693__kyster__1-oct-g.wav');
+N = length(samples);
+Notes{1,3} = struct(...
+  'name', 'G3', 'harmonic', 196, ...
+  'samples', ((samples(:, 1) + samples(:, 2)) / 2)', ... % Stereo to mono
+  'fs', fs, 'N', N);
 
-hold on;
+for idx = 1:numel(Notes)
+  note = Notes{1,idx};
+  N = note.N;
+  fs = note.fs;
+
+  % FFT of the note
+  note_fft = abs(fft(note.samples));
+  bins = [0:N - 1]; % Antal fft_bins
+  freq = bins * (fs / N); % Frekvensakse
+
+  %% NORMALIZING THE FFT
+  note_fft_norm = 2 * note_fft / N;
+
+  % Plot nylon guitar A note
+  figure(2500 + idx);
+  semilogx(freq(1:0.5 * end), note_fft_norm(1:0.5 * end), 'LineWidth', 2);
+  grid on;
+  axis tight
+  xlabel('Frequency [Hz]');
+  ylabel('Magnitude');
+  hold on;
+
+  % Synthesize A note
+  duration = N / fs;
+  note_synth = KSPluck(note.harmonic, duration, fs);
+  note_synth = note_synth(1:N);
+  note_synth_fft = abs(fft(note_synth));
+  note_synth_fft_norm = 2 * note_synth_fft / N;
+
+  % Plot synthesized A note
+  semilogx(freq(1:0.5 * end), note_synth_fft_norm(1:0.5 * end));
+  legend([note.name, ' nylon string'], [note.name, ' synthesized'], 'Location', 'best');
+  xlim([10 10000])
+  hold off;
+
+  title({['Sammenligning af tonen ', note.name, ' (', num2str(note.harmonic), 'Hz).'],['Samplerate: ',num2str(fs)]});
+  savefig(['Pluck_Compare_', note.name,'_FFT']);
+
+  %%%% Time comparison of tones
+  time = ((0:numel(note_synth) - 1) / fs);
+  time_guitar = ((0:N - 1) / fs);
+
+  figure(5000 + idx); clf;
+  plot(time, note_synth)
+  axis tight
+  grid on
+  xlabel('Tid [s]')
+  ylabel('Amplitude')
+  hold on 
+  plot(time_guitar, note.samples)
+  hold off
+  savefig(['Pluck_Compare_', note.name, '_Time'])
+end
 
 
-A_fft = abs(fft(A(:, 1)'));
-bins_guitar = [0:N_guitar - 1]; % Antal fft_bins_guitar
-freq_guitar = bins_guitar * (fs_guitar / N_guitar); % Frekvensakse
-%% NORMALIZING THE FFT
-A_fft_norm = 2 * A_fft / N;
-% Plot nylon guitar A note
-semilogx(freq_guitar(1:0.5 * end), A_fft_norm(1:0.5 * end),'DisplayName','A fra guitar', 'SeriesIndex', 1, 'LineWidth', 2);
-hold off
-
-
-
-grid on;
-axis tight
-xlim([10 10000])
-legend('Location','Best')
-xlabel('Frequency [Hz]');
-ylabel('Magnitude');
-
-title({'Sammenligning af tonen A (110Hz).',['Samplerate: ',num2str(fs_guitar)]});
-savefig('Pluck_Compare_A_FFT') 
-
-
-
-
-
-
-
-%%%% A tone compare time
-
-
-time = ((0:numel(PluckSound) - 1) / fs_guitar);
-time_guitar = ((0:N_guitar - 1) / fs_guitar);
-
-figure(5000); clf;
-plot(time, PluckSound)
-axis tight
-grid on
-xlabel('Tid [s]')
-ylabel('Amplitude')
-hold on 
-plot(time_guitar, A)
-hold off
-savefig('Pluck_Compare_A_Time')

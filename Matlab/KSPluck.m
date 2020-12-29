@@ -37,7 +37,7 @@ function KSPluckSound = KSPluck(Tone, Duration, Fs)
     %%---InitialStart---
     A = 1;
     u = (randi([0, 1], [1, PValue]) .* 2 - 1);
-    AddDuration = (Fs * Duration) - PValue;
+    AddDuration = round(Fs * Duration) - PValue;
     zeroAdd = zeros(1, AddDuration);
     x = [A * u, zeroAdd];
     %%---InitialEnd---
