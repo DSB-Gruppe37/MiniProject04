@@ -1,4 +1,4 @@
-clear
+clear; close all;
 Fs = 20e3;
 
 PluckSound1 = KSPluck(82.41, 3); % e
@@ -20,12 +20,13 @@ axis tight
 grid on
 xlabel('Tid [s]')
 ylabel('Amplitude')
-savefig('StringPlot')
+savefig('Pluck_AllStrings')
 
 clear PluckList
 PluckList = [PluckSound1; PluckSound2; PluckSound3; PluckSound4; PluckSound5; PluckSound6];
 
 figure(1500); clf;
+set(gcf, 'PaperUnits', 'centimeters', 'PaperSize', [14 20], 'PaperPosition', [0 0 14 20]);
 PluckTile = tiledlayout(size(PluckList, 1), 1);
 PluckTile.TileSpacing = 'compact';
 PluckTile.Padding = 'compact';
@@ -45,7 +46,7 @@ end
 ylabel(PluckTile, 'Amplitude')
 xlabel(PluckTile, 'Frekvens [Hz]')
 title(PluckTile, {'FFT af syntesiserede guitartoner.', 'Toner: eADGBE'})
-savefig('StringFFTComparison')
+savefig('Pluck_FFTComparison')
 
 %%% FFT COMPARE
 clear all;
@@ -61,7 +62,8 @@ pluck_fft = abs(fft(PluckSound));
 pluck_fft_norm = 2 * pluck_fft / N;
 
 figure(2500)
-semilogx(freq(1:0.5 * end), pluck_fft_norm(1:0.5 * end), 'DisplayName', 'A fra algoritme');
+set(gcf, 'PaperUnits', 'centimeters', 'PaperSize', [20 12], 'PaperPosition', [0 0 20 12])
+semilogx(freq(1:0.5 * end), pluck_fft_norm(1:0.5 * end), 'DisplayName', 'A fra algoritme', 'SeriesIndex', 2);
 
 hold on;
 
@@ -72,7 +74,7 @@ freq_guitar = bins_guitar * (fs_guitar / N_guitar); % Frekvensakse
 %% NORMALIZING THE FFT
 A_fft_norm = 2 * A_fft / N;
 % Plot nylon guitar A note
-semilogx(freq_guitar(1:0.5 * end), A_fft_norm(1:0.5 * end),'DisplayName','A fra guitar');
+semilogx(freq_guitar(1:0.5 * end), A_fft_norm(1:0.5 * end),'DisplayName','A fra guitar', 'SeriesIndex', 1, 'LineWidth', 2);
 hold off
 
 
@@ -84,8 +86,8 @@ legend('Location','Best')
 xlabel('Frequency [Hz]');
 ylabel('Magnitude');
 
-sgtitle({'Sammenligning af tonen A (110Hz).',['Samplerate: ',num2str(fs_guitar)]});
-savefig('aToneCompare') 
+title({'Sammenligning af tonen A (110Hz).',['Samplerate: ',num2str(fs_guitar)]});
+savefig('Pluck_Compare_A_FFT') 
 
 
 
@@ -108,4 +110,4 @@ ylabel('Amplitude')
 hold on 
 plot(time_guitar, A)
 hold off
-savefig('aToneCompareTime')
+savefig('Pluck_Compare_A_Time')
