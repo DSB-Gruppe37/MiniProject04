@@ -90,7 +90,7 @@ for idx = 1:numel(Notes)
   %% NORMALIZING THE FFT
   note_fft_norm = 2 * note_fft / N;
 
-  % Plot nylon guitar A note
+  % Plot nylon guitar note
   figure(2500 + idx);
   semilogx(freq(1:0.5 * end), note_fft_norm(1:0.5 * end), 'LineWidth', 2);
   grid on;
@@ -99,14 +99,14 @@ for idx = 1:numel(Notes)
   ylabel('Magnitude');
   hold on;
 
-  % Synthesize A note
+  % Synthesize matching note
   duration = N / fs;
   note_synth = KSPluck(note.harmonic, duration, fs);
   note_synth = note_synth(1:N);
   note_synth_fft = abs(fft(note_synth));
   note_synth_fft_norm = 2 * note_synth_fft / N;
 
-  % Plot synthesized A note
+  % Plot synthesized note
   semilogx(freq(1:0.5 * end), note_synth_fft_norm(1:0.5 * end));
   legend([note.name, ' nylon string'], [note.name, ' synthesized'], 'Location', 'best');
   xlim([10 10000])
@@ -115,7 +115,7 @@ for idx = 1:numel(Notes)
   title({['Sammenligning af tonen ', note.name, ' (', num2str(note.harmonic), 'Hz).'],['Samplerate: ',num2str(fs)]});
   savefig(['Pluck_Compare_', note.name,'_FFT']);
 
-  %%%% Time comparison of tones
+  % Time comparison of tones
   time = ((0:numel(note_synth) - 1) / fs);
   time_guitar = ((0:N - 1) / fs);
 
