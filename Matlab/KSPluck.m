@@ -26,7 +26,6 @@ function KSPluckSound = KSPluck(Tone, Duration, Fs)
     if nargin < 3
         Fs = DEFAULT_SAMPLERATE;
     end
-
     %%---ValidationEnd---
 
     %%---ToneStart---

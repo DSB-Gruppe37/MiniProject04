@@ -37,5 +37,40 @@ hvor \(x\) er signalamplituden ved sample \(n\) og \(y\) er udgangsamplitude ved
 \end{table}
 
 \subsection{Implementation af Karplus-Strong algoritmen}
+Udfra 
+\begin{equation}
+f_0 = \frac{F_s}{p + \frac{1}{2}},
+\end{equation} er det givet at grundtonen der skal afspilles har en sammen med $p$ værdien samt sampleraten\cite{Karplus1983}. Udfra dette kan \coderef[ToneSet]{KSPluck.m} oprettes. 
+\includecode[ToneSet]{KSPluck.m}{}{linerange={ToneStart-ToneEnd}}
+Der tages forbehold for at $p \in \mathbb{Z^+}$ ved at afrounde resultatet.  
+
+\subsubsection{Begyndelsesbetingelser}
+For at kunne genere en række forskellige overtoner, er det nødvendigt at have en række tilfældige samples indlæst i en \emph{wavetable}. Dette er et array med $p$ pladser, hvori der ligger en række samples. Disse samples bliver gentaget gang på gang i løbet af algoritmen, hvorved der opstår en række gentagelser.
+\begin{equation}
+    x_{n} = 
+    \begin{cases} 
+    A u_n & n = 0,1,2 \dots , p - 1\\
+    0, & n \geq p,
+\end{cases} 
+\quad u_n \in [-1:1]  
+\end{equation}
+
+
+I \coderef[Initial]{KSPluck.m} ses opsætningen af \emph{intial conditions} der bruges i strengalgoritmen set i \eqref{eq:JaffeString}. Begyndelsesværdierne kan beskrives \cite{Jaffe1983}
+
+\includecode[Initial]{KSPluck.m}{Opsætning af \emph{initial conditions} for strengalgoritmen.}{linerange={InitialStart-InitialEnd}}
+
+\texttt{randi([0 1], [1, PValue]) }giver en tilfældig sekvens af \texttt{0 0 1 0 1 1 0 1}. \emph{Element-wise} ganges denne med 2 så det bliver \texttt{0 0 2 0 2 2 0 2}. Derefter trækkes \texttt{1} fra så den resulterende sekvens bliver \texttt{-1 -1 1 -1 1 1 -1 1} hvorved $u_n$ er oprettet. Amplituden $A$ holdes på værdien 1.
+
+Resultatet er en række tilfældige værdier i et array med størrelsen p. Slutteligt ganges en række nuller på for at kunne styre længden af output lyden. \texttt{Duration} er her en værdi opgivet i sekunder, hvorved en samplelængde kan indstilles uafhængigt af sampleraten.
+\subsubsection{\emph{2-tap } midling af samples}
+\includecode[Pluck]{KSPluck.m}{Selve midlingsfilteret i aktion. Bemærk \texttt{PrevValue=0}, dette gøres for at undgå $y(n-p-1)$ ved første gennemløb, da dette vil give negative et negativt indeks. Derefter ersattes \emph{PrevValue} med den netop udregnede værdi.}{linerange={PluckStart-PluckEnd}}
+
+\fig{Offset.png}{0.6}{\emph{Skitse} der viser forskydningen af metoden. Der indlæses en række værdier i området $0 \le n \le p$, derefter sættes startpunktet for algortimen til $p$, hvorved området $0 \le n \le p$ fungere som et \emph{initial conditions.}. Her ses for \(u_n \in [0:1]\)}
+
+ TIl sidst laves en række justeringer på outputtet, hvilket ses i \coderef[Output]{KSPluck.m}.
+\includecode[Output]{KSPluck.m}{Output-stadie hvori: Startværdien sættes til $p$, DC offset fjernes og normalisering af lyden så maksimal værdiern bliver 1. Tilsidst ses returværdien \texttt{KSPluckSound}}{linerange={OutputStart-FuncEnd}}
+
+Ovenstående kan herefter kaldes ved hjælp af \texttt{KSPluck(Tone,Duration,SampleRate)} og strengalgoritmen er dermed implementeret. 
 
 Den fulde implementation ses i bilag \ref{seq:appendix:matlab code}.
