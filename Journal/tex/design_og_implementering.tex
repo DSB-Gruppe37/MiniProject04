@@ -2,7 +2,7 @@
 
 Syntetiseringen bygger på et valg af grundfrekvens \(f_0\) for den tone der skal afspilles.
 Ud fra den almindelig tonerække for en stemt guitar\cite{GuitarTunings}, kan der nemt vælges et sæt frekvenser til test, disse er gengivet i \tabref{guitar tunings}.
-Sammenhængen mellem grundfrekvens og samplingfrekvens ses i \ref{eq:fund and sample relation} og giver tonens periodetid \(N\) i samples og kan desuden beskrives som en forsinkelse i det filter der realiserer algoritmen.
+Sammenhængen mellem grundfrekvens og samplingfrekvens ses i \eqref{eq:fund and sample relation} og giver tonens periodetid \(N\) i samples og kan desuden beskrives som en forsinkelse i det filter der realiserer algoritmen.
 
 \begin{equation}\label{eq:fund and sample relation}
   N = \frac{f_s}{f_0}
@@ -13,12 +13,12 @@ På \figref{Karplus-strong-schematic} ses blokdiagram der beskriver filteret hvo
 \fig{Karplus-strong-schematic}{0.4}{
   Signalflow der viser konceptet af Karplus Strong syntese.\cite{KarplusSignalFlowWiki}}
 
-Jaffe \& Smith beskriver algoritmen
-\begin{equation}
+Jaffe \& Smith beskriver algoritmen med differensligningen
+\begin{equation}\label{eq:JaffeString}
   y[n] = x[n] + \frac{y[n - N] + y\left[n -(N + 1)\right]}{2}
 \end{equation}
 hvor \(x\) er signalamplituden ved sample \(n\) og \(y\) er udgangsamplitude ved sample \(n\).
-\(N\) er længden af toneperioden givet i samples \cite{Jaffe1983}
+\(N\) er længden af toneperioden givet i samples\cite{Jaffe1983}.
 
 \begin{table}[]
   \centering
@@ -36,23 +36,23 @@ hvor \(x\) er signalamplituden ved sample \(n\) og \(y\) er udgangsamplitude ved
   \end{tabular}
 \end{table}
 
-\subsection{Implementation af Karplus-Strong algoritmen}
-Udfra 
+\subsection{Implementation af Karplus-Strong algoritmen for en streng}
+Udfra
 \begin{equation}
-f_0 = \frac{F_s}{p + \frac{1}{2}},
-\end{equation} er det givet at grundtonen der skal afspilles har en sammen med $p$ værdien samt sampleraten\cite{Karplus1983}. Udfra dette kan \coderef[ToneSet]{KSPluck.m} oprettes. 
+  f_0 = \frac{F_s}{p + \frac{1}{2}},
+\end{equation} er det givet at grundtonen der skal afspilles har en sammenhæng med $p$ værdien samt sampleraten\cite{Karplus1983}. Udfra dette kan \coderef[ToneSet]{KSPluck.m} oprettes.
 \includecode[ToneSet]{KSPluck.m}{}{linerange={ToneStart-ToneEnd}}
-Der tages forbehold for at $p \in \mathbb{Z^+}$ ved at afrounde resultatet.  
+Der tages forbehold for at $p \in \mathbb{Z^+}$ ved at afrunde resultatet.
 
 \subsubsection{Begyndelsesbetingelser}
 For at kunne genere en række forskellige overtoner, er det nødvendigt at have en række tilfældige samples indlæst i en \emph{wavetable}. Dette er et array med $p$ pladser, hvori der ligger en række samples. Disse samples bliver gentaget gang på gang i løbet af algoritmen, hvorved der opstår en række gentagelser.
 \begin{equation}
-    x_{n} = 
-    \begin{cases} 
-    A u_n & n = 0,1,2 \dots , p - 1\\
-    0, & n \geq p,
-\end{cases} 
-\quad u_n \in [-1:1]  
+  x_{n} =
+  \begin{cases}
+    A u_n & n = 0,1,2 \dots , p - 1 \\
+    0,    & n \geq p,
+  \end{cases}
+  \quad u_n \in [-1:1]
 \end{equation}
 
 
@@ -68,9 +68,38 @@ Resultatet er en række tilfældige værdier i et array med størrelsen p. Slutt
 
 \fig{Offset.png}{0.6}{\emph{Skitse} der viser forskydningen af metoden. Der indlæses en række værdier i området $0 \le n \le p$, derefter sættes startpunktet for algortimen til $p$, hvorved området $0 \le n \le p$ fungere som et \emph{initial conditions.}. Her ses for \(u_n \in [0:1]\)}
 
- TIl sidst laves en række justeringer på outputtet, hvilket ses i \coderef[Output]{KSPluck.m}.
+TIl sidst laves en række justeringer på outputtet, hvilket ses i \coderef[Output]{KSPluck.m}.
 \includecode[Output]{KSPluck.m}{Output-stadie hvori: Startværdien sættes til $p$, DC offset fjernes og normalisering af lyden så maksimal værdiern bliver 1. Tilsidst ses returværdien \texttt{KSPluckSound}}{linerange={OutputStart-FuncEnd}}
 
-Ovenstående kan herefter kaldes ved hjælp af \texttt{KSPluck(Tone,Duration,SampleRate)} og strengalgoritmen er dermed implementeret. 
+Ovenstående kan herefter kaldes ved hjælp af \texttt{KSPluck(Tone,Duration,SampleRate)} og strengalgoritmen er dermed implementeret.
 
-Den fulde implementation ses i bilag \ref{seq:appendix:matlab code}.
+Den fulde implementation ses i bilag \ref{seq:appendix:kspluck}.
+
+
+\subsection{Implementation af Karplus-Strong algoritmen for trommer}
+
+Som beskrevet i den originale artiklen\cite{Karplus1983} kan strengalgoritmen udvides til at give trommelyde, ved at tilføje et tilfældighedselement i filteret.
+Baseret på implementationen af strengalgoritmen \texttt{KSPluck} udvides filtret i en ny funktion, således at trommelyde kan syntetiseres.
+Tilfældigheden \textit{b} kaldes for \textit{blend faktor} og styrer fortegnet for den resulterende udgangsamplitude når samples føres igennem filteret.
+Trommealgoritmen beskrives med \eqref{eq:drum algo}.
+
+\begin{equation}\label{eq:drum algo}
+  y[n] =
+  \begin{dcases*}
+    +\frac{y[n-N] + y[n - (N+1)]}{2} & sandsynlighed \(b\)   \\
+    -\frac{y[n-N] + y[n - (N+1)]}{2} & sandsynlighed \(1-b\)
+  \end{dcases*}
+\end{equation}
+
+Da trommealgoritme i sig selv indeholder tilfældighed kan begyndelsesbetingelsen sættes til en konstant værdi, hvilket ses i \coderef[Initial]{KSDrum.m} hvor output fyldes med 1-taller som startværdi.
+Desuden genereres et antal tilfældige værdier i intervallet \([0; 1]\) som bruges til at skifte fortegn baseret på \textit{blend faktoren}.
+
+\includecode[Initial]{KSDrum.m}{Begyndelsesbetingelser for trommealgoritmen}{linerange=InitialStart-InitialEnd}
+
+Selve filtreringen er næsten magen til strengalgoritmen, dog med en \texttt{if-else} til at skifte fortegn baseret på de genererede tilfældige værdier og den specificerede \textit{blend faktor}.
+Filtreringen ses i \coderef[Filtering]{KSDrum.m}.
+
+\includecode[Filtering]{KSDrum.m}{Filtrering der skaber en trommelyd}{linerange=DrumStart-DrumEnd}
+
+Den fulde implementering ses i \ref{seq:appendix:ksdrum} og indeholdes i funktionen \texttt{KSDrum(PValue, b, Duration, Fs)} hvor det påpeges at funktionsforskriften er en smule anderledes end for \texttt{KSPluck}.
+Dette fordi det ikke giver mening at angive en \textit{Tone} for tromme algoritmen, i stedet angives \textit{P}-værdien direkte, da denne styrer lydens aftagelseshastighed.

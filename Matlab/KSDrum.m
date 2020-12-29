@@ -33,6 +33,7 @@ function KSDrumSound = KSDrum(PValue, b, Duration, Fs)
         Fs = DEFAULT_SAMPLERATE;
     end
 
+    %%---InitialStart---
     % Initial condition
     y = [ones(1, Fs * Duration)];
 
@@ -40,8 +41,10 @@ function KSDrumSound = KSDrum(PValue, b, Duration, Fs)
 
     %% Used for validating the blend factor
     randomValue = rand(1, OutputLength);
+    %%---InitialEnd---
 
-    % Avoid the negati5ve index at first run
+    %%---DrumStart---
+    % Avoid the negative index at first run
     PrevValue = 0;
 
     for idx = PValue + 1:PValue + OutputLength
@@ -55,6 +58,7 @@ function KSDrumSound = KSDrum(PValue, b, Duration, Fs)
         % Assign the current value as the previous for next run.
         PrevValue = y(idx - PValue);
     end
+    %%---DrumEnd---
 
     y = y(PValue:end);
     %% Subtract the DC offset
