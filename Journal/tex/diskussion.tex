@@ -1,1 +1,17 @@
 \section{Diskussion}
+
+
+\subsection{Trommealgoritmen}
+
+\subsubsection{Blendfaktoren og sampleantal}
+
+
+\Figref{DrumPValueComparison} viser hvordan $p$-værdien har en tydelig indvirkning i længden af lyden, hvor det ses at en høj $p$-værdi giver en lang tone.
+
+I tidsdomænet,\figref{DrumPValueComparison} ses det tydeligt at $b=0$ producere, med undtagelse af $p=32$, et periodisk signal med form som et firkantsignal hvor $P_W = p$, dette signal illustrere samtidigt størrelsen den brugte \emph{wavetable}. Ved $b=1$ ses det at der også er et gentagende signal, der dog har en dæmpet amplitude.
+
+$b=1/4 \; \& \; 3/4$ ligner i tidsdomænet hinanden, men har i frekvensdomænet,\figref{DrumFFT_p_128}, to forskellige udtryk. Det ses hvordan energiniveauet stiger i frekvensområdet \SI{>1000}{Hz} når $b \to 1$ og praktisktalt er væk ved $b=0$. Interessant er det at se hvordan en blendfaktor på 1 giver et næsten identisk resultat som ved brug af strengalgoritmen, hvilket ses i frekvensdomænet hvor der er tydelige overtoner tilstede. Dette skyldes sammenhængen set i \eqref{eq:drum algo}, hvor en blendfaktor vil få funktionen til at opføre sig som strengalgoritmen. Den eneste forskel ligger nu i begyndelsebetingelserne.
+
+Ved gennemlytning af lydene bemærkes det at, hvis $p$-værdien øges tilstrækkeligt, bliver lydklangen meget metallisk at høre på, hvilket også ses i FFT graferne hvor det højfrekvente område bliver kraftigere og kraftigere i takt med en forøgelse af $p$.
+
+Ved at justere $p$ og $b$ værdien er det dermed muligt at opnå en række forskellige klangudtryk.
